@@ -69,7 +69,8 @@ for m=1:rounds
 	end
 	
 	u_rand_rate = (max_coef - min_coef)*u_rand_base+min_coef;
-	[P, B, R, A, T] = user_spec(u_rand_rate, u_reg, U);
+	[RU, RS] = user_spec(u_rand_rate, u_reg, U);
+	P = RU{1}; B = RU{2}; T = RU{3}; R = RS{1}; A = RS{2};
 	round_info(m,:) = {U, u_reg, C, P, B, R, A, T, sum(R)};
 	R4 = repmat(R, 1, E, S, F);									% repeating 1D matrix to 3D for matrix manupulations
 	C4 = repmat(C, 1, E, S, F);
