@@ -5,7 +5,7 @@ u_round = union(u_reconfig, u_new);
 U = length(u_round);
 
 if U>0
-	x_old = x_tot(u_reconfig,:,:);
+	x_old = x_tot(u_reconfig,:,:,:);
 	U_old = length(u_reconfig);
 	
 	u_reg{reg1} = find(ismember(u_round,intersect(u_reg_tot{reg1},u_round)));
@@ -13,10 +13,10 @@ if U>0
 	u_reg{reg12} = find(ismember(u_round,intersect(u_reg_tot{reg12},u_round)));
 	u_reg{reg21} = find(ismember(u_round,intersect(u_reg_tot{reg21},u_round)));
 
-	P3 = P3_tot(u_round,:,:);
-	T3 = T3_tot(u_round,:,:);
-	B3 = B3_tot(u_round,:,:);
-	R3 = R3_tot(u_round,:,:);
-	A3 =  A_tot(u_round,:,:);
-	loss_gain = lg_tot(u_round,:,:);
+	P3 = P4_tot(u_round,:,:,:);
+	T3 = T4_tot(u_round,:,:,:);
+	B3 = B4_tot(u_round,:,:,:);
+	R3 = R4_tot(u_round,:,:,:);
+	A4 =  A4_tot(u_round,:,:,:);
+	loss_gain = lg_tot(u_round,:,:,:);
 end

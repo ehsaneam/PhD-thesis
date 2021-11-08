@@ -17,7 +17,7 @@ function [RU, RS] = user_spec(u_rand, u_reg, U)
 	A(:, split2, do_func) = -max_A;									% penalty for irrational choose :D
 	A(:, split2, no_func) = norm_A;
 	A(com_reg, split7_1, do_func) = max_A;							% regions we can have functionality
-	A(xor_reg, split7_1, do_func) = -max_A;
+	A(xor_reg, split7_1, do_func) = -max_A;							% penalty for irrational choose :D
 	A(:, split7_1, no_func) = norm_A;
 	A(:, blocked_con, :) = min_A;
 	

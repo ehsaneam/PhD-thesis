@@ -1,14 +1,15 @@
-global alpha beta delta gamma mu tau max_U blocked_con split7_1 split2 ...
+global alpha delta mu tau max_U blocked_con split7_1 split2 ...
 	D E s S f F P_RU B_RU T_RU max_A min_A min_C max_C max_P min_P ...
 	max_B min_B max_R min_R max_T min_T ratio_P ratio_B edge_prob ...
 	do_func no_func norm_A menu rate_scaling user_scaling ...
 	throughput_scaling bw_scaling process_scaling prob_scaling ...
 	func_scaling reg1 reg2 reg12 reg21 TMAX
 %% adjustables
-alpha = 1;											% rate maximization coefficient in goal function
-beta = 1E-4;										% subcarrier usage minimization coefficient in goal function
+alpha = zeros(5,1);
+alpha(1) = 1;										% rate maximization coefficient in goal function
+alpha(2) = 1E-4;									% subcarrier usage minimization coefficient in goal function
+alpha(3) = 1E-2;									% service interruption punishment minimization coefficient
 delta = 1E-1;										% tolerance variable for if-else constraint linearization
-gamma = 1E-2;										% service interruption punishment minimization coefficient
 mu = 1;												% arrival rate
 tau = 1;											% hold time
 TMAX = 20;											% maximum time simulation is done
