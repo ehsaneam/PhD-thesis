@@ -1,8 +1,8 @@
 if U>0															% these updates will be done if users in this round exists
 	val_x = value(x);
 	x_tot(u_round,:,:,:) = val_x;								% update total x
-	B_res = val_x.*loss_gain.*B4;								% calculate product of matrices for easier usage
-	P_res = val_x.*loss_gain.*P4;
+	B_res = val_x.*C4.*B4;								% calculate product of matrices for easier usage
+	P_res = val_x.*C4.*P4;
 	T_res = val_x.*T4;
 	R_res = val_x.*R4.*loss_gain;
 
@@ -37,6 +37,12 @@ if U>0															% these updates will be done if users in this round exists
 
 		T_0(i,:,split2) = T_0(i,:,split2) + ...
 						  sum(sum(T_res(u_reg_fix{i},:,split2,:),4),1);
+					  
+		TP_0(i,:,split7_1) = TP_0(i,:,split7_1) + ...
+						  sum(sum(T_res(u_reg_fix{j},:,split7_1,:),4),1);
+
+		TP_0(i,:,split2) = TP_0(i,:,split2) + ...
+						  sum(sum(T_res(u_reg_fix{j},:,split2,:),4),1);
 	end
 
 	sum_rate = sum_rate + sum(sum(sum(sum(R_res))));

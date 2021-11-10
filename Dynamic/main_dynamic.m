@@ -55,6 +55,8 @@ for m=1:rounds
 					   A_tot, T_tot, sum(R_tot), TStart, TEnd, Reconf};
 
 	func_state = do_func;
+	scheduler = centralized;
+	fairness = 1;
 	dynamic
 	results_info_do(m,:) = {B_0, P_0, T_0};
 	

@@ -3,9 +3,10 @@ BIGM = 1e5;
 P_0 = zeros(D,1);									% last resource usage status
 B_0 = zeros(D,1);
 T_0 = zeros(D,E,S);
+TP_0 = zeros(D,E,S);
 R_res = loss_gain.*R4;
-P_res = loss_gain.*P4;
-B_res = loss_gain.*B4;
+P_res = C4.*P4;
+B_res = C4.*B4;
 	
 y = binvar(D,S,E,'full');							% subcarrier e in RU i used for split s
 x = binvar(U,E,S,F,'full');							% user u used subcarrier e and split s with func f
@@ -38,8 +39,8 @@ for i=1:D
 	con = [con, T_0(i,:,split2) + sum(sum(x(u_reg{i},:,split2,:).* ...
 				T4(u_reg{i},:,split2,:),4),1) <= T_RU/E* ...
 				permute(y(i,split2,:),[1,3,2])];
-	con = [con, sum(x(u_reg{ji},:,split2,no_func),1) <= BIGM*w(i,:), ...
-				sum(sum(sum(x(u_reg{i},:,:,:),4),3),1) <= BIGM*(1-w(i,:))];
+	con = [con, TP_0(i,:,split2) + sum(x(u_reg{ji},:,split2,no_func),1) <= BIGM*w(i,:), ...
+				sum(T_0(i,:,connected),3) + sum(sum(sum(x(u_reg{i},:,connected,:),4),3),1) <= BIGM*(1-w(i,:))];
 end
 
 options = sdpsettings('solver', 'cplex', 'verbose',1, 'debug', 1, ...
@@ -48,8 +49,8 @@ results = optimize(con, G, options);
 
 val_x = value(x);
 R_res = val_x.*loss_gain.*R4;
-P_res = val_x.*loss_gain.*P4;
-B_res = val_x.*loss_gain.*B4;
+P_res = val_x.*C4.*P4;
+B_res = val_x.*C4.*B4;
 T_res = val_x.*T4;
 
 for i=1:D
@@ -63,5 +64,7 @@ for i=1:D
 					  sum(sum(T_res(u_reg{ji},:,split7_1,:),4),1);
 	T_0(i,:,split2) = T_0(i,:,split2) + ...
 					  sum(sum(T_res(u_reg{i},:,split2,:),4),1);
+	TP_0(i,:,:) = TP_0(i,:,:) + ...
+					  sum(sum(T_res(u_reg{ji},:,:,:),4),1);
 end
 sum_rate = sum(sum(sum(sum(R_res))));
