@@ -1,7 +1,7 @@
 u_finish = find(TStart<t & TEnd>=t & TEnd <t+1 & ~Reconf);
 if ~isempty(u_finish)
 	P_tot_res = x_tot.*C4_tot.*P4_tot;
-	B_tot_res = x_tot.*C4_tot.*P4_tot;
+	B_tot_res = x_tot.*C4_tot.*B4_tot;
 	T_tot_res = x_tot.*T4_tot;
 	for i=1:D
 		ji = (i==reg1)*reg21 + (i==reg2)*reg12;
@@ -16,9 +16,7 @@ if ~isempty(u_finish)
 					  sum(sum(T_tot_res(xfin_ji,:,split7_1,:),4),1);
 		T_0(i,:,split2) = T_0(i,:,split2) - ...
 					  sum(sum(T_tot_res(fin_i,:,split2,:),4),1);
-		TP_0(i,:,split7_1) = TP_0(i,:,split7_1) - ...
-					  sum(sum(T_tot_res(xfin_ji,:,split7_1,:),4),1);
-		TP_0(i,:,split2) = TP_0(i,:,split2) - ...
-					  sum(sum(T_tot_res(xfin_ji,:,split2,:),4),1);
+		TP_0(i,:,:) = TP_0(i,:,:) - ...
+					  sum(sum(T_tot_res(xfin_ji,:,:,:),4),1);
 	end
 end

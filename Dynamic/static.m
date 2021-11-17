@@ -17,8 +17,8 @@ if U>0
 		zeta_B = intvar(D,1,'full');							% total bw usage
 		z = intvar(D,1,'full');									% fairness variable
 		con = [con, zeta_P <= P_RU, zeta_B <= B_RU, zeta_P >= 0, zeta_B >= 0, ...
-			z >= 0, P_RU*(B_RU-zeta_B)-B_RU*(P_RU-zeta_P) <= z, ...
-			B_RU*(P_RU-zeta_P)-P_RU*(B_RU-zeta_B) <= B_RU*P_RU*z];
+			z >= 0, P_RU*zeta_B - B_RU*zeta_P <= (B_RU*P_RU/100)*z, ...
+			B_RU*zeta_P - P_RU*zeta_B <= (B_RU*P_RU/1000)*z];
 	else
 		zeta_P = ones(D,1)*P_RU; zeta_B = ones(D,1)*B_RU; z = 0;
 	end

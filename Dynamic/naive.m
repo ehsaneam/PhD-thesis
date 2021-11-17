@@ -1,39 +1,24 @@
 if U-U_old>0
-	y = zeros(D,S,E,'full');							% subcarrier e in RU i used for split s
-	x = zeros(U,E,S,F,'full');							% user u used split s with func f
-	x(1:U_old,:,:,:) = x_old;
-
+	y = zeros(D,S,E);							% subcarrier e in RU i used for split s
+	x = zeros(U,E,S,F);							% user u used split s with func f
+	
 	R_res = loss_gain.*R4;
 	P_res = C4.*P4;
 	B_res = C4.*B4;
-	P0_old = sum(sum(sum(sum(P_res().*x))));
-	util_P = zeros(D,1);
-	util_B = zeros(D,1);
-
+	
+	res_0 = {P_0,B_0,T_0,TP_0};
+	res = {P_res,B_res,T4};
+	
+	res_old = update_res_old(res_0, res, u_reg, x);
+	
 	for i=U_old+1:U
-		for k=1:D
-			util_P(k) = (P_0(k))/P_RU;
-			util_B(k) = (B_0(k))/B_RU;
-		end
-		if ismember(u_round(i),unity(u_reg{reg12},u_reg{reg21}))
-			s_sel = split7_1;
-			f_sel = do_func;
-		elseif ismember(u_round(i),u_reg{reg1})
-			if util_P(reg1)>util_B(reg1)
-				s_sel = split7_1;
-				f_sel = no_func;
-			else
-				s_sel = split2;
-				f_sel = no_func;
-			end
-		elseif ismember(u_round(i),u_reg{reg2})
-			if util_P(reg2)>util_B(reg2)
-				s_sel = split7_1;
-				f_sel = no_func;
-			else
-				s_sel = split2;
-				f_sel = no_func;
-			end
-		end
+		util_P = P0_old/P_RU;
+		util_B = B0_old/B_RU;
+		res_u = {P_res(i,:,:,:),B(i,:,:,:),T(i,:,1,1)};
+		find_subcarrier_inputs = {i,y,u_reg,res_old,res_u};
+		net_slices = generate_ns_list(i,u_reg,util_P,util_B);
+		[e,ns_index] = find_net_slice(find_subcarrier_inputs, net_slices, index);
+		[e_sel,s_sel,f_sel] = handle_ns_response(net_slices,e,ns_index);
+		[x,y,res_old]=update_naive(res_old,x,y);
 	end
 end
