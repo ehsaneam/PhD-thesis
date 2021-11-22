@@ -21,4 +21,6 @@ if U-U_old>0
 		[e_sel,s_sel,f_sel] = handle_ns_response(net_slices,e,ns_index);
 		[x,y,res_old]=update_naive(res_old,x,y);
 	end
+elseif U_old>0
+	
 end

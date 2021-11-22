@@ -1,19 +1,25 @@
 if U>0															% these updates will be done if users in this round exists
-	val_x = value(x);
-	x_tot(u_round,:,:,:) = round(val_x);						% update total x
+	val_x = round(value(x));
+	x_tot(u_round,:,:,:) = val_x;								% update total x
 	B_res = val_x.*C4.*B4;										% calculate product of matrices for easier usage
 	P_res = val_x.*C4.*P4;
 	T_res = val_x.*T4;
 	R_res = val_x.*R4.*loss_gain;
 	util_P = zeros(1,D);
 	util_B = zeros(1,D);
+	util_T = zeros(D,E);
 
+%% update reconf stats
 	reconf_done = sum(sum(sum(val_x(1:U_old,:,:,:)~=x_old,4),3),2);
 	reconf_done_ind = find(reconf_done>0);						% reconfigured connections last longer
-	TEnd(u_round(reconf_done_ind)) = TEnd(u_round(reconf_done_ind)) + 1;
-	reconf_done_num = reconf_done_num + sum(reconf_done>0);
-	reconf_done_rate = reconf_done_rate + sum(sum(sum(sum(R_res(reconf_done_ind,:,:,:)))));
+	if ~isempty(reconf_done_ind)
+		TEnd(u_round(reconf_done_ind)) = TEnd(u_round(reconf_done_ind)) + 1;
+		reconf_done_num = reconf_done_num + sum(reconf_done>0);
+		reconf_done_rate = reconf_done_rate + ...
+			sum(sum(sum(sum(R_res(reconf_done_ind,:,:,:)))));
+	end
 
+%% update resources
 	u_reg_fix = cell(4,1);
 	% update resources only for fixed connections reconfigurable connections
 	% resource consumption is repeated in next step
@@ -34,6 +40,9 @@ if U>0															% these updates will be done if users in this round exists
 		util_B(i) = (B_0(i) + sum(sum(sum(sum(B_res(u_reg{i},:,:,:))))) +  ...
 						  sum(sum(B_res(u_reg{ji},:,split7_1,do_func))))/B_RU;
 		
+		util_T(i,:) = sum(T_0(i,:,:) + sum(sum(T_res(u_reg{i},:,:,:),4),1) + ...
+						  sum(T_res(u_reg_fix{ji},:,:,do_func),1),3)/(T_RU/E);
+		
 		P_0(i) = P_0(i) + sum(sum(sum(sum(P_res(u_reg_fix{i},:,:,:))))) + ...
 						  sum(sum(P_res(u_reg_fix{ji},:,split7_1,do_func)));
 
@@ -52,13 +61,10 @@ if U>0															% these updates will be done if users in this round exists
 	end
 end
 
-R_tot_res = x_tot.*lg_tot.*R4_tot;
+%% stats
 % these updates will be done every time unit
+R_tot_res = x_tot.*lg_tot.*R4_tot;
 blockage_num = blockage_num + sum(sum(sum(x_tot(u_alive,:,blocked_con,:),4)));
-% if blockage_num>0
-% 	input('sag tush')
-% end
-
 blockage_rate = blockage_rate + sum(sum(sum(x_tot(u_alive,:,blocked_con,:).* ...
 	R4_tot(u_alive,:,blocked_con,:),4)));
 
@@ -72,3 +78,11 @@ func_num = func_num + sum(sum(x_tot(u_alive,:,split7_1,do_func)));
 func_rate = func_rate + sum(sum(R_tot_res(u_alive,:,split7_1,do_func)));
 
 sum_rate = sum_rate + sum(sum(sum(sum(R_tot_res(u_alive,:,connected,:)))));
+
+%% bad variable selections stat
+edgers = intersect(u_alive,union(u_reg_tot{reg12},u_reg_tot{reg21}));
+centerers = setdiff(intersect(union(u_reg_tot{reg1}, u_reg_tot{reg2}),u_alive),edgers);
+bad_edge_sel_split7 = bad_edge_sel_split7 + sum(sum(x_tot(edgers,:,split7_1,no_func)));
+bad_edge_sel_split2 = bad_edge_sel_split2 + sum(sum(sum(x_tot(edgers,:,split2,:))));
+bad_split2 = bad_split2 + sum(sum(x_tot(:,:,split2,do_func)));
+bad_split7_1 = bad_split7_1 + sum(sum(x_tot(centerers,:,split7_1,do_func)));

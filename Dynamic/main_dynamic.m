@@ -58,7 +58,7 @@ for m=1:rounds
 	scheduler = centralized;
 	fairness = 1;
 	dynamic
-	results_info_do(m,:) = {B_0, P_0, T_0};
+% 	results_info_do(m,:) = {};
 	
 % 	func_state = no_func;
 % 	dynamic
