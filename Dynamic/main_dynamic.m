@@ -57,6 +57,7 @@ for m=1:rounds
 	func_state = do_func;
 	scheduler = centralized;
 	fairness = 1;
+	algorithm = naive_alg;
 	dynamic
 % 	results_info_do(m,:) = {};
 	
