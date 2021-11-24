@@ -1,6 +1,6 @@
 function e_out = find_subcarrier(req_n_res_stat, s, f)
 	global reg1 reg2 reg12 reg21 split7_1 split2 do_func ...
-		P_RU B_RU T_RU E
+		P_RU B_RU T_RU E D blocked_con
 
 	u=req_n_res_stat{1};
 	y=req_n_res_stat{2};
@@ -10,19 +10,19 @@ function e_out = find_subcarrier(req_n_res_stat, s, f)
 	
 	e_out = 0;
 	P0_old = res_old{1};B0_old = res_old{2};T0_old = res_old{3};TP0_old = res_old{4};
-	P = res_u{1}(:,:,s,f);B = res_u{2}(:,:,s,f);T = res_u{3};
+	P = res_u{1}(:,:,s);B = res_u{2}(:,:,s);T = res_u{3};
 	
 	%% constraint statements
 	lhs_T = T + T0_old(:,:,s);
-	rhs_T = permute(y(:,s,:),[1,3,2])*T_RU/E;
-	check_T = lhs_T<rhs_T;
+	rhs_T = T_RU/E*(permute(y(:,s,:)==1 | y(:,blocked_con,:)==1, [1,3,2]));
+	check_T = lhs_T<=rhs_T;
 	lhs_P = P + P0_old;
-	check_P = lhs_P<P_RU;
+	check_P = lhs_P<=P_RU;
 	lhs_B = B + B0_old;
-	check_B = lhs_B<B_RU;
+	check_B = lhs_B<=B_RU;
 	assert(isequal(size(check_T),[D,E]) && ...
-			   isequal(size(check_P),[D,1]) && ...
-			   isequal(size(check_B),[D,1]), 'naive_check_reg.m: size mismatch')
+			   isequal(size(check_P),[1,D]) && ...
+			   isequal(size(check_B),[1,D]), 'naive_check_reg.m: size mismatch')
 		   
 	%% bandwidth and process resource check	   
 	for k=1:D
