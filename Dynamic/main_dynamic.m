@@ -13,11 +13,13 @@ if isempty(menu)
 elseif menu<rate_scaling || menu>func_scaling
 	menu = rate_scaling;
 end
-
+tic
 rounds = 1;
-results_info_do = cell(rounds, 3);
-results_info_no = cell(rounds, 3);
-round_info		= cell(rounds, 12);
+results_info_full = cell(rounds, 12);
+results_info_naive = cell(rounds, 12);
+results_info_nofunc = cell(rounds, 12);
+results_info_dist = cell(rounds, 12);
+round_info = cell(rounds, 12);
 
 if menu == rate_scaling
 	min_coef = 2; max_coef = 3;
@@ -59,11 +61,27 @@ for m=1:rounds
 	fairness = 1;
 	algorithm = naive_alg;
 	dynamic
-% 	results_info_do(m,:) = {};
+	results_info_naive(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
 	
-% 	func_state = no_func;
+	algorithm = optimize_alg;
+	dynamic
+	results_info_full(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
+	
+	func_state = no_func;
+	dynamic
+	results_info_nofunc(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
+	
+% 	scheduler = distributed;
 % 	dynamic
-% 	results_info_no(m,:) = {B_0, P_0, T_0};
+% 	results_info_dist(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+% 		bad_split2,bad_split7_1,reconf_done_num,x_tot};
 	
 	if menu == rate_scaling
 		min_coef = min_coef + 0.5;
@@ -84,5 +102,5 @@ for m=1:rounds
 end
 
 % plotter
-% filename = strcat('..\mat_files\Dynamic\option_', num2str(menu));
-% save(filename, 'results_info_do', 'results_info_no', 'round_info')
+filename = strcat('..\mat_files\Dynamic\option_', num2str(menu));
+save(filename, 'results_info_full', 'results_info_naive', 'results_info_nofunc', 'round_info')

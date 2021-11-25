@@ -1,3 +1,4 @@
+timer_start = tic;
 P_0 = zeros(D,1);									% last resource usage status
 B_0 = zeros(D,1);
 T_0 = zeros(D,E,S);
@@ -29,3 +30,4 @@ for t=0:TMAX
 	end
 	updater
 end
+timer_elapsed = toc(timer_start);
