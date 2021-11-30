@@ -3,6 +3,7 @@ P_0 = zeros(D,1);									% last resource usage status
 B_0 = zeros(D,1);
 T_0 = zeros(D,E,S);
 TP_0 = zeros(D,E,S);
+TZ_0 = zeros(D,E,S);
 u_reg = cell(4,1);
 
 sum_rate = 0; blockage_num = 0; blockage_rate = 0; split7_1_num = 0;

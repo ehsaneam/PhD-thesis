@@ -18,5 +18,7 @@ if ~isempty(u_finish)
 					  sum(sum(T_tot_res(fin_i,:,split2,:),4),1);
 		TP_0(i,:,:) = TP_0(i,:,:) - ...
 					  sum(sum(T_tot_res(xfin_ji,:,:,:),4),1);
+		T_0(i,:,:) = T_0(i,:,:) - ...
+					  sum(sum(T_tot_res(fin_i,:,:,:),4),1);
 	end
 end

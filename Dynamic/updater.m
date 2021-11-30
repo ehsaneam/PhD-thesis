@@ -58,6 +58,9 @@ if U>0															% these updates will be done if users in this round exists
 					  
 		TP_0(i,:,:) = TP_0(i,:,:) + ...
 						  sum(sum(T_res(u_reg_fix{ji},:,:,:),4),1);
+					  
+		TZ_0(i,:,:) = TZ_0(i,:,:) + ...
+						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1);
 	end
 end
 

@@ -56,32 +56,32 @@ for m=1:rounds
 	round_info(m,:) = {U_tot, u_reg_tot, C_tot, P_tot, B_tot, R_tot, ...
 					   A_tot, T_tot, sum(R_tot), TStart, TEnd, Reconf};
 
-	func_state = do_func;
-	scheduler = centralized;
+% 	func_state = do_func;
+% 	scheduler = centralized;
 	fairness = 1;
-	algorithm = naive_alg;
-	dynamic
-	results_info_naive(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
-		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
-	
-	algorithm = optimize_alg;
-	dynamic
-	results_info_full(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
-		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
-	
-	func_state = no_func;
-	dynamic
-	results_info_nofunc(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
-		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
-	
-% 	scheduler = distributed;
+% 	algorithm = naive_alg;
 % 	dynamic
-% 	results_info_dist(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+% 	results_info_naive(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
 % 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-% 		bad_split2,bad_split7_1,reconf_done_num,x_tot};
+% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
+% 	
+	algorithm = optimize_alg;
+% 	dynamic
+% 	results_info_full(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
+% 	
+	func_state = no_func;
+% 	dynamic
+% 	results_info_nofunc(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed};
+	
+	scheduler = distributed;
+	dynamic
+	results_info_dist(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+		bad_split2,bad_split7_1,reconf_done_num,x_tot};
 	
 	if menu == rate_scaling
 		min_coef = min_coef + 0.5;
@@ -93,7 +93,7 @@ for m=1:rounds
 		B_RU = B_RU + 100;
 	elseif menu == process_scaling
 		P_RU = P_RU + 50;
-	elseif menu == prob_scaling
+	elseif menu == prob_scaling 
 		edge_prob = edge_prob + .05;
 	elseif menu == func_scaling
 		max_A = max_A - 1;
