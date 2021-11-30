@@ -19,4 +19,7 @@ if U>0
 	R4 = R4_tot(u_round,:,:,:);
 	C4 = C4_tot(u_round,:,:,:);
 	loss_gain = lg_tot(u_round,:,:,:);
+else
+	x_old = double.empty(0,E,S,F);
+	U_old = 0;
 end

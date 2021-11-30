@@ -1,4 +1,4 @@
-clear y x G con psi_p psi_n sigma zeta_P zeta_B z
+clear y x G con psi_p psi_n sigma zeta_P zeta_B z w
 BIGM = 1e5;
 if U>0
 	y = binvar(D,S,E,'full');							% subcarrier e in RU i used for split s
@@ -115,10 +115,10 @@ if U>0
 			+sum(alpha(4)*z+alpha(5)*(zeta_P+zeta_B));
 	
 	options = sdpsettings('solver', 'cplex', 'verbose',1, 'debug', 1, ...
-		'warning', 1, 'removeequalities', 0, 'showprogress', 1, 'cplex.timelimit', 200);
+		'warning', 1, 'removeequalities', 0, 'showprogress', 1, 'cplex.timelimit', 60);
 	results = optimize(con, G, options);
 
-	if results.problem~=0
+	if results.problem~=0 && results.problem~=3
 		input('Error: Cannot find a solution, infeasible problem.');
 	end
 end
