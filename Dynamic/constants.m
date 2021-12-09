@@ -13,7 +13,7 @@ alpha(3) = 1E-1;									% service interruption punishment minimization coeffici
 alpha(4) = 1E-3;									% fairness maximization coefficient
 alpha(5) = 1E-3;									% total bw & processing usage - difference minimization coefficient
 delta = 1E-1;										% tolerance variable for if-else constraint linearization
-mu = 3;											% arrival rate
+mu = 3;												% arrival rate
 tau = 3;											% hold time
 TMAX = 20;											% maximum time simulation is done
 max_U = 100;										% maximum number of users in each round of optimization
@@ -31,7 +31,7 @@ max_R = 1;											% maximum rate requested by user
 min_R = 0;											% minimum //
 ratio_P = 10;										% ratio of processing power when split-2 is used to split-7.1
 ratio_B = 10;										% ratio of optical bandwidth when split-7.1 is used to split-2
-edge_prob = 0.2;									% probability of user being at edge of cell
+edge_prob = 0.4;									% probability of user being at edge of cell
 
 %% constants
 D = 2;												% number of regions-RUs-cells

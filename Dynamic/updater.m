@@ -40,7 +40,7 @@ if U>0															% these updates will be done if users in this round exists
 		util_B(i) = (B_0(i) + sum(sum(sum(sum(B_res(u_reg{i},:,:,:))))) +  ...
 						  sum(sum(B_res(u_reg{ji},:,split7_1,do_func))))/B_RU;
 		
-		util_T(i,:) = sum(T_0(i,:,:) + sum(sum(T_res(u_reg{i},:,:,:),4),1) + ...
+		util_T(i,:) = sum(TU_0(i,:,:) + sum(sum(T_res(u_reg{i},:,:,:),4),1) + ...
 						  sum(T_res(u_reg_fix{ji},:,:,do_func),1),3)/(T_RU/E);
 		
 		P_0(i) = P_0(i) + sum(sum(sum(sum(P_res(u_reg_fix{i},:,:,:))))) + ...
@@ -55,6 +55,10 @@ if U>0															% these updates will be done if users in this round exists
 
 		T_0(i,:,split2) = T_0(i,:,split2) + ...
 						  sum(sum(T_res(u_reg_fix{i},:,split2,:),4),1);
+					  					  
+		TU_0(i,:,:) = TU_0(i,:,:) + ...
+						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1) + ...
+						  sum(T_res(u_reg_fix{ji},:,:,do_func),1);
 					  
 		TP_0(i,:,:) = TP_0(i,:,:) + ...
 						  sum(sum(T_res(u_reg_fix{ji},:,:,:),4),1);
@@ -62,6 +66,10 @@ if U>0															% these updates will be done if users in this round exists
 		TZ_0(i,:,:) = TZ_0(i,:,:) + ...
 						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1);
 	end
+	
+	util_avg_P = (util_avg_P*t + sum(util_P)/D)/(t+1);
+	util_avg_B = (util_avg_B*t + sum(util_B)/D)/(t+1);
+	util_avg_T = (util_avg_T*t + sum(sum(util_T))/D/E)/(t+1);
 end
 
 %% stats
