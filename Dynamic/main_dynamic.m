@@ -7,20 +7,19 @@ constants
 input_prompt = strcat('Select from menu:(default is rate)\n   1-rate scaling\n   2-user scaling',...
 	'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
 	'\n   7-channel state scaling\n=>');
-% menu = input(input_prompt);
-menu = 2;
+menu = input(input_prompt);
+% menu = 2;
 if isempty(menu)
 	menu = rate_scaling;
 elseif menu<rate_scaling || menu>func_scaling
 	menu = rate_scaling;
 end
 tic
-rounds = 10;
+rounds = 1;
 senario_data_slots = 16;
 results_info_full = cell(rounds, senario_data_slots);
 results_info_naive = cell(rounds, senario_data_slots);
 results_info_nofunc = cell(rounds, senario_data_slots);
-results_info_dist = cell(rounds, senario_data_slots);
 results_info_nofair = cell(rounds, senario_data_slots);
 round_info = cell(rounds, 12);
 
@@ -32,8 +31,8 @@ end
 rate_coef = [min_coef, max_coef];
 
 if menu == user_scaling
-	mu = 1;
-	tau = 1;
+	mu = 10;
+	tau = 10;
 end
 
 if menu == throughput_scaling
@@ -66,7 +65,6 @@ for m=1:rounds
 					   A_tot, T_tot, sum(R_tot), TStart, TEnd, Reconf};
 
 	func_state = do_func;
-	scheduler = centralized;
 	fairness = 1;
 % 	algorithm = naive_alg;
 % 	dynamic
@@ -82,26 +80,20 @@ for m=1:rounds
 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed, ...
 		util_avg_P, util_avg_B, util_avg_T};
 	
-	fairness = 0;
+% 	fairness = 0;
+% 	dynamic
+% 	results_info_nofair(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
+% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed, ...
+% 		util_avg_P, util_avg_B, util_avg_T};
+	
+	func_state = no_func;
 	dynamic
-	results_info_nofair(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
+	results_info_nofunc(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed, ...
 		util_avg_P, util_avg_B, util_avg_T};
 	
-% 	func_state = no_func;
-% 	dynamic
-% 	results_info_nofunc(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
-% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed, ...
-% 		util_avg_P, util_avg_B, util_avg_T};
-% 	
-% 	scheduler = distributed;
-% 	dynamic
-% 	results_info_dist(m,:) = {sum_rate,func_num,split2_num,split7_1_num, ...
-% 		blockage_num,blockage_rate,bad_edge_sel_split7,bad_edge_sel_split2, ...
-% 		bad_split2,bad_split7_1,reconf_done_num,x_tot,timer_elapsed, ...
-% 		util_avg_P, util_avg_B, util_avg_T};
 	
 	if menu == rate_scaling
 % 		min_coef = min_coef + 0.5;
@@ -124,8 +116,7 @@ for m=1:rounds
 	end
 end
 
-file_count = size(ls('..\mat_files\Dynamic\'),1) - 8;
-% filename = strcat('..\mat_files\Dynamic\option_', num2str(menu),'_',num2str(file_count));
-filename = strcat('..\mat_files\Dynamic\option_', num2str(3),'_',num2str(file_count));
+file_count = size(ls('..\mat_files\Dynamic\'),1) - 2;
+filename = strcat('..\mat_files\Dynamic\option_', num2str(menu),'_',num2str(file_count));
 save(filename, 'results_info_full', 'results_info_naive', ...
-	'results_info_nofunc', 'round_info', 'results_info_dist','results_info_nofair')
+	'results_info_nofunc', 'round_info', 'results_info_nofair')

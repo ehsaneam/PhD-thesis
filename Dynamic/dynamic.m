@@ -3,7 +3,6 @@ P_0 = zeros(D,1);									% last resource usage status
 B_0 = zeros(D,1);
 T_0 = zeros(D,E,S);
 TP_0 = zeros(D,E,S);
-TZ_0 = zeros(D,E,S);
 TU_0 = zeros(D,E,S);
 u_reg = cell(4,1);
 
@@ -18,7 +17,7 @@ R4_tot = repmat(R_tot, 1, E, S, F);					% repeating 1D matrix to 4D for matrix m
 C4_tot = repmat(C_tot, 1, E, S, F);
 P4_tot = permute(repmat(P_tot, 1, 1, E, F), [1, 3, 2, 4]);
 B4_tot = permute(repmat(B_tot, 1, 1, E, F), [1, 3, 2, 4]);
-T4_tot = permute(repmat(T_tot, 1, 1, E, F), [1, 3, 2, 4]);
+T4_tot = permute(repmat(T_tot, 1, 1, 1, E), [1, 4, 2, 3]);
 A4_tot = permute(repmat(A_tot, 1, 1, 1, E), [1, 4, 2, 3]);
 lg_tot = A4_tot.*C4_tot;
 

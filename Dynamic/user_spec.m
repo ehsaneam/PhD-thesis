@@ -6,8 +6,8 @@ function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	arrival_rates = poissrnd(mu, [TMAX+1,1]);
 	U = sum(arrival_rates);
 	B = zeros(U, S);
-	T = zeros(U, S);
 	P = zeros(U, S);
+	T = zeros(U, S, F);
 	A = zeros(U, S, F);
 	TStart = zeros(U, 1);
 	
@@ -50,13 +50,14 @@ function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	B(:, split7_1) = ratio_B * B(:, split2);
 	B(:, blocked_con) = 0;
 	
-	T(:, split7_1) = u_rand*(max_T - min_T) + min_T;
-	T(:, split2) = T(:, split7_1);
-	T(:, blocked_con) = 0;
-	
 	P(:, split7_1) = u_rand*(max_P - min_P) + min_P;
 	P(:, split2) = ratio_P * P(:, split7_1);
 	P(:, blocked_con) = 0;
+	
+	T(:, split7_1, :) = repmat(u_rand*(max_T - min_T) + min_T, 1, 1, F);
+	T(:, split2, no_func) = T(:, split7_1, do_func);
+	T(:, split2, do_func) = 0;
+	T(:, blocked_con, :) = 0;
 	
 	%% Outputs Concatination
 	RU = {P, B, T};													% user resource usage statistics

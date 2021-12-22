@@ -3,10 +3,11 @@ u_alive = find(TStart<t+1 & TEnd>t);
 u_reconfig = find(TStart<t & TEnd>t & Reconf);
 u_round = union(u_reconfig, u_new);
 U = length(u_round);
+x_old = zeros(U, E, S, F);
+U_old = length(u_reconfig);
 
 if U>0
-	x_old = x_tot(u_reconfig,:,:,:);
-	U_old = length(u_reconfig);
+	x_old(1:U_old,:,:,:) = x_tot(u_reconfig,:,:,:);
 	
 	u_reg{reg1} = find(ismember(u_round,intersect(u_reg_tot{reg1},u_round)));
 	u_reg{reg2} = find(ismember(u_round,intersect(u_reg_tot{reg2},u_round)));
@@ -19,7 +20,4 @@ if U>0
 	R4 = R4_tot(u_round,:,:,:);
 	C4 = C4_tot(u_round,:,:,:);
 	loss_gain = lg_tot(u_round,:,:,:);
-else
-	x_old = double.empty(0,E,S,F);
-	U_old = 0;
 end

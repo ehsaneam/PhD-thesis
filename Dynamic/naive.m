@@ -7,7 +7,7 @@ if U-U_old>0
 	P_res = C4.*P4;
 	B_res = C4.*B4;
 	
-	res_0 = {P_0,B_0,T_0,TP_0};
+	res_0 = {P_0,B_0,T_0};
 	res = {P_res,B_res,T4};
 	
 	[res_old,y] = update_res_old(res_0, res, u_reg, x);

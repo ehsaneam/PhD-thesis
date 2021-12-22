@@ -10,7 +10,7 @@ if U>0															% these updates will be done if users in this round exists
 	util_T = zeros(D,E);
 
 %% update reconf stats
-	reconf_done = sum(sum(sum(val_x(1:U_old,:,:,:)~=x_old,4),3),2);
+	reconf_done = sum(sum(sum(val_x(1:U_old,:,:,:)~=x_old(1:U_old,:,:,:),4),3),2);
 	reconf_done_ind = find(reconf_done>0);						% reconfigured connections last longer
 	if ~isempty(reconf_done_ind)
 		TEnd(u_round(reconf_done_ind)) = TEnd(u_round(reconf_done_ind)) + 1;
@@ -41,7 +41,7 @@ if U>0															% these updates will be done if users in this round exists
 						  sum(sum(B_res(u_reg{ji},:,split7_1,do_func))))/B_RU;
 		
 		util_T(i,:) = sum(TU_0(i,:,:) + sum(sum(T_res(u_reg{i},:,:,:),4),1) + ...
-						  sum(T_res(u_reg_fix{ji},:,:,do_func),1),3)/(T_RU/E);
+						  sum(T_res(u_reg{ji},:,:,do_func),1),3)/(T_RU/E);
 		
 		P_0(i) = P_0(i) + sum(sum(sum(sum(P_res(u_reg_fix{i},:,:,:))))) + ...
 						  sum(sum(P_res(u_reg_fix{ji},:,split7_1,do_func)));
@@ -49,22 +49,16 @@ if U>0															% these updates will be done if users in this round exists
 		B_0(i) = B_0(i) + sum(sum(sum(sum(B_res(u_reg_fix{i},:,:,:))))) +  ...
 						  sum(sum(B_res(u_reg_fix{ji},:,split7_1,do_func)));
 
-		T_0(i,:,split7_1) = T_0(i,:,split7_1) + ...
-						  sum(sum(T_res(u_reg_fix{i},:,split7_1,:),4),1) + ...
-						  sum(sum(T_res(u_reg_fix{ji},:,split7_1,:),4),1);
+		T_0(i,:,:) = T_0(i,:,:) + ...
+						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1) + ...
+						  sum(sum(T_res(u_reg_fix{ji},:,:,:),4),1);
 
-		T_0(i,:,split2) = T_0(i,:,split2) + ...
-						  sum(sum(T_res(u_reg_fix{i},:,split2,:),4),1);
-					  					  
+		TP_0(i,:,:) = TP_0(i,:,:) + ...
+						  sum(sum(T_res(u_reg_fix{ji},:,:,no_func),4),1);
+					  
 		TU_0(i,:,:) = TU_0(i,:,:) + ...
 						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1) + ...
 						  sum(T_res(u_reg_fix{ji},:,:,do_func),1);
-					  
-		TP_0(i,:,:) = TP_0(i,:,:) + ...
-						  sum(sum(T_res(u_reg_fix{ji},:,:,:),4),1);
-					  
-		TZ_0(i,:,:) = TZ_0(i,:,:) + ...
-						  sum(sum(T_res(u_reg_fix{i},:,:,:),4),1);
 	end
 	
 	util_avg_P = (util_avg_P*t + sum(util_P)/D)/(t+1);

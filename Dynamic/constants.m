@@ -1,22 +1,20 @@
-global alpha delta mu tau max_U blocked_con split7_1 split2 connected ...
+global alpha delta mu tau blocked_con split7_1 split2 connected beta ...
 	D E s S f F P_RU B_RU T_RU max_A min_A min_C max_C max_P min_P ...
 	max_B min_B max_R min_R max_T min_T ratio_P ratio_B edge_prob ...
 	do_func no_func norm_A menu rate_scaling user_scaling z_coef ...
-	throughput_scaling bw_scaling process_scaling prob_scaling ...
-	func_scaling reg1 reg2 reg12 reg21 TMAX centralized distributed ...
-	algorithm optimize_alg naive_alg
+	throughput_scaling bw_scaling process_scaling prob_scaling TMAX ...
+	func_scaling reg1 reg2 reg12 reg21 algorithm optimize_alg naive_alg
+
 %% adjustables
-alpha = zeros(5,1);
+alpha = zeros(3,1);
 alpha(1) = 1;										% rate maximization coefficient in goal function
-alpha(2) = 1E-4;									% subcarrier usage minimization coefficient in goal function
-alpha(3) = 1E-1;									% service interruption punishment minimization coefficient
-alpha(4) = 1E-3;									% fairness maximization coefficient
-alpha(5) = 1E-3;									% total bw & processing usage - difference minimization coefficient
+alpha(2) = 1E-3;									% subcarrier usage minimization coefficient in goal function
+alpha(3) = 1E-2;									% fairness maximization coefficient
+beta = 1E-1;										% reward for repeating decision of reconfigurable requests
 delta = 1E-1;										% tolerance variable for if-else constraint linearization
 mu = 3;												% arrival rate
 tau = 3;											% hold time
 TMAX = 20;											% maximum time simulation is done
-max_U = 100;										% maximum number of users in each round of optimization
 E = 10;												% number of subcarriers
 P_RU = 5E2;											% processing power capacity for 1 RU
 B_RU = 5E2;											% optical bandwidth available for fiber attached to 1 RU
@@ -36,7 +34,6 @@ edge_prob = 0.4;									% probability of user being at edge of cell
 %% constants
 D = 2;												% number of regions-RUs-cells
 reg1=1;reg2=2;reg12=3;reg21=4;
-centralized=1;distributed=2;						% radio resource scheduler
 s = [1,2,3];										% 3 for blocked connections, 1 for split-7.1, 2 for split-2
 blocked_con=3;split7_1=1;split2=2;connected=split7_1:split2;
 S = length(s);
