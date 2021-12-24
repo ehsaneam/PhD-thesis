@@ -31,6 +31,6 @@ for t=0:TMAX
 		naive
 	end
 	timer_elapsed = toc(timer_start);
-	T_avg_elapsed = (timer_elapsed + T_avg_elapsed*t)/t+1;
+	T_avg_elapsed = (timer_elapsed + T_avg_elapsed*t)/(t+1);
 	updater
 end

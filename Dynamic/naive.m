@@ -1,13 +1,13 @@
 x = zeros(U,E,S,F);							% user u used split s with func f
 if U_old>0
-	x(1:U_old,:,:,:) = x_old;
+	x = x_old;
 end
 if U-U_old>0
 	R_res = loss_gain.*R4;
 	P_res = C4.*P4;
 	B_res = C4.*B4;
 	
-	res_0 = {P_0,B_0,T_0};
+	res_0 = {P_0,B_0,T_0,TP_0};
 	res = {P_res,B_res,T4};
 	
 	[res_old,y] = update_res_old(res_0, res, u_reg, x);

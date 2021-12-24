@@ -9,11 +9,11 @@ function e_out = find_subcarrier(req_n_res_stat, s, f)
 	res_u=req_n_res_stat{5};
 	
 	e_out = 0;
-	P0_old = res_old{1};B0_old = res_old{2};T0_old = res_old{3};
+	P0_old = res_old{1};B0_old = res_old{2};T0_old = res_old{3};TP0_old = res_old{4};
 	P = res_u{1}(:,:,s);B = res_u{2}(:,:,s);T = res_u{3};
 	
 	%% constraint statements
-	lhs_T = T + T0_old(:,:,s);
+	lhs_T = T + T0_old(:,:,s) + TP0_old(:,:,s);
 	rhs_T = T_RU/E*(permute(y(:,s,:)==1 | y(:,blocked_con,:)==1, [1,3,2]));
 	check_T = lhs_T<=rhs_T;
 	lhs_P = P + P0_old;
