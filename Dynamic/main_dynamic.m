@@ -7,7 +7,7 @@ constants
 input_prompt = strcat('Select from menu:(default is rate)\n   1-rate scaling\n   2-user scaling',...
 	'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
 	'\n   7-channel state scaling\n=>');
-menu = input(input_prompt);
+% menu = input(input_prompt);
 menu = 2;
 if isempty(menu)
 	menu = rate_scaling;
