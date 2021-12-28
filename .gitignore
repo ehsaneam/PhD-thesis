@@ -1,3 +1,5 @@
 *.mat
 mat_files
 *.asv
+*.sh
+*.py
