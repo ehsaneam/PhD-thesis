@@ -8,7 +8,7 @@ input_prompt = strcat('Select from menu:(default is rate)\n   1-rate scaling\n  
 	'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
 	'\n   7-channel state scaling\n=>');
 menu = input(input_prompt);
-% menu = 2;
+menu = 2;
 if isempty(menu)
 	menu = rate_scaling;
 elseif menu<rate_scaling || menu>func_scaling
@@ -125,8 +125,13 @@ for m=1:rounds
 		tau = tau + 1;
 	end
 end
+if isunix % linux OS
+	file_count = size(ls('../mat_files/Dynamic/'),1);
+	filename = strcat('../mat_files/Dynamic/option_', num2str(menu),'_',num2str(file_count));
+elseif ispc % windows OS
+    file_count = size(ls('..\mat_files\Dynamic\'),1) - 2;
+	filename = strcat('..\mat_files\Dynamic\option_', num2str(menu),'_',num2str(file_count));
+end
 
-file_count = size(ls('..\mat_files\Dynamic\'),1) - 2;
-filename = strcat('..\mat_files\Dynamic\option_', num2str(menu),'_',num2str(file_count));
 save(filename, 'results_info_full', 'results_info_naive', ...
 	'results_info_nofunc', 'round_info', 'results_info_nofair', 'results_info_noReconf')
