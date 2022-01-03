@@ -32,8 +32,8 @@ end
 rate_coef = [min_coef, max_coef];
 
 if menu == user_scaling
-	mu = 10;
-	tau = 10;
+	mu = 1;
+	tau = 1;
 end
 
 if menu == throughput_scaling
