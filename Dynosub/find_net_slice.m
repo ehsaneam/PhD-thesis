@@ -1,6 +1,5 @@
-function [e_out,ind_out] = find_net_slice(find_subcarrier_inputs, net_slices, index)
+function ind_out = find_net_slice(find_subcarrier_inputs, net_slices, index)
 	if index>length(net_slices)
-		e_out = -1;
 		ind_out = 0;
 		return
 	end
@@ -10,7 +9,7 @@ function [e_out,ind_out] = find_net_slice(find_subcarrier_inputs, net_slices, in
 	e_out = find_subcarrier(find_subcarrier_inputs, s_sel, f_sel);
 	if e_out<1
 		index = index + 1;
-		[e_out,ind_out] = find_net_slice(find_subcarrier_inputs, net_slices, index);
+		ind_out = find_net_slice(find_subcarrier_inputs, net_slices, index);
 	else
 		ind_out = index;
 	end
