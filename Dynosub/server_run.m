@@ -1,3 +1,3 @@
-for kalkal=1:10
+for repeat=1:10
 	main_dynamic
 end
