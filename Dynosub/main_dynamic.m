@@ -155,10 +155,10 @@ for m=m:rounds
 end
 
 if isunix % linux OS
-	file_count = size(ls('../mat_files/Dynosub/'),1)+1;
+	file_count = size(dir('../mat_files/Dynosub/*.mat'),1);
 	filename = strcat('../mat_files/Dynosub/option_', num2str(menu),'_',num2str(file_count));
 elseif ispc % windows OS
-	file_count = size(ls('..\mat_files\Dynosub\'),1) - 2;
+	file_count = size(dir('..\mat_files\Dynosub\*.mat'),1);
 	filename = strcat('..\mat_files\Dynosub\option_', num2str(menu),'_',num2str(file_count));
 end
 
