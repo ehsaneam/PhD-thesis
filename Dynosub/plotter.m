@@ -7,8 +7,8 @@ rounds = 10;
 constants
 
 menu = 2;
-mut = 15;
-repeat = 2;
+mut = 16;
+repeat = 21;
 
 base_filename = '..\mat_files\Dynosub\option_';
 

@@ -11,7 +11,7 @@ else
 		'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
 		'\n   7-channel state scaling\n=>');
 	% menu = input(input_prompt);
-	menu = 2;
+	menu = 6;
 	if isempty(menu)
 		menu = rate_scaling;
 	elseif menu<rate_scaling || menu>func_scaling
@@ -45,7 +45,7 @@ else
 	end
 
 	if menu == bw_scaling
-		B_RU = 100;
+		B_RU = 50;
 	end
 
 	if menu == process_scaling
@@ -139,9 +139,9 @@ for m=m:rounds
 	elseif menu == throughput_scaling
 		E = E + 100;
 	elseif menu == bw_scaling
-		B_RU = B_RU + 100;
+		B_RU = B_RU + 20;
 	elseif menu == process_scaling
-		P_RU = P_RU + 50;
+		P_RU = P_RU + 20;
 	elseif menu == prob_scaling
 		edge_prob = edge_prob + .05;
 	elseif menu == func_scaling
