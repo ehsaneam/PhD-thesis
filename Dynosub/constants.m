@@ -3,7 +3,8 @@ global alpha delta mu tau blocked_con split7_1 split2 connected beta ...
 	max_B min_B max_R min_R ratio_P ratio_B edge_prob slot_cap ...
 	do_func no_func norm_A menu rate_scaling user_scaling z_coef  ...
 	throughput_scaling bw_scaling process_scaling prob_scaling TMAX ...
-	func_scaling reg1 reg2 reg12 reg21 algorithm optimize_alg naive_alg
+	func_scaling reg1 reg2 reg12 reg21 algorithm optimize_alg naive_alg ...
+	ratio_scaling
 
 %% adjustables
 alpha = zeros(2,1);
@@ -50,6 +51,7 @@ bw_scaling = 4;
 process_scaling = 5;
 prob_scaling = 6;
 func_scaling = 7;
+ratio_scaling = 8;
 menu = 1;
 algorithm = 1;
 optimize_alg = 1;

@@ -9,9 +9,9 @@ else
 	constants
 	input_prompt = strcat('Select from menu:(default is rate)\n   1-rate scaling\n   2-user scaling',...
 		'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
-		'\n   7-channel state scaling\n=>');
+		'\n   7-channel state scaling\n   8-increase ratio scaling\n=>');
 	% menu = input(input_prompt);
-	menu = 6;
+	menu = 8;
 	if isempty(menu)
 		menu = rate_scaling;
 	elseif menu<rate_scaling || menu>func_scaling
@@ -60,6 +60,12 @@ else
 		max_A = 10;
 		min_C = 1/max_A;
 	end
+	
+	if menu == ratio_scaling
+		ratio_P = 1;
+		ratio_B = 1;
+	end
+	
 	m = 1;
 	sen = 1;
 end
@@ -150,6 +156,9 @@ for m=m:rounds
 	elseif menu == user_scaling
 		mu = mu + 1;
 		tau = tau + 1;
+	elseif menu == ratio_scaling
+		ratio_P = ratio_P + 1;
+		ratio_B = ratio_B + 1;
 	end
 	sen = 1;
 end
