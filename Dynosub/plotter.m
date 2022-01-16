@@ -7,250 +7,66 @@ rounds = 10;
 constants
 
 menu = 2;
-mut = 16;
+mut = 5;
 repeat = 21;
 
 base_filename = '..\mat_files\Dynosub\option_';
-
-colors = {'-+r';'-ob';'-*m';'-xk';':sr'};
+legendary = ["Centralized+Functionality","Naive","No-Functionality","No fair Res. Usage","No Reconfiguration"];
+info = {repeat, rounds, menu, mut, base_filename};
 
 if menu==user_scaling
+	xlabelary = 'Traffic Intensity(E)';
+	xtickary = {'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'};
 	if mut==1
-		rates = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				rates(i,m,1) = results_info_full{m,mut};
-				rates(i,m,2) = results_info_naive{m,mut};
-				rates(i,m,3) = results_info_nofunc{m,mut};
-				rates(i,m,4) = results_info_nofair{m,mut};
-				rates(i,m,5) = results_info_noReconf{m,mut};
-			end
-		end
-		mean_rate = squeeze(mean(rates,1));
-		for j=1:senarios
-			plot(mean_rate(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality','No fair Res. Usage','No Reconfiguration');
-		xlabel('Traffic Intensity(E)')
-		ylabel('Summation of Requsts Rate')
-		figure
-		mean_rate(:,2) = 100*(1-mean_rate(:,2)./mean_rate(:,1));
-		mean_rate(:,3) = 100*(1-mean_rate(:,3)./mean_rate(:,1));
-		mean_rate(:,4) = 100*(1-mean_rate(:,4)./mean_rate(:,1));
-		bar(mean_rate(:,2:senarios));
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Naive','No-Functionality','No fair Res. Usage','No Reconfiguration');
-		xlabel('Traffic Intensity(E)')
-		ylabel('100\times(1 - SRR/full-SRR)')
+		mean_rate = data_gather(info, senarios);
+		plot_core(mean_rate, legendary, xlabelary, 'Rate Ratio Performance', ...
+			xtickary, senarios, 'plot')
+		title('Answered Requests Rates to Total Request Rates Ratio')
 	end
 	if mut==5
-		bp = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				bp(i,m,1) = results_info_full{m,mut}/(results_info_full{m,mut} + ...
-					results_info_full{m,3} + results_info_full{m,4});
-				bp(i,m,2) = results_info_naive{m,mut}/(results_info_naive{m,mut} + ...
-					results_info_naive{m,3} + results_info_naive{m,4});
-				bp(i,m,3) = results_info_nofunc{m,mut}/(results_info_nofunc{m,mut} + ...
-					results_info_nofunc{m,3} + results_info_nofunc{m,4});
-				bp(i,m,4) = results_info_nofair{m,mut}/(results_info_nofair{m,mut} + ...
-					results_info_nofair{m,3} + results_info_nofair{m,4});
-				bp(i,m,5) = results_info_noReconf{m,mut}/(results_info_noReconf{m,mut} + ...
-					results_info_noReconf{m,3} + results_info_noReconf{m,4});
-			end
-		end
-		mean_bp = squeeze(mean(bp,1));
-		for j=1:senarios
-			plot(mean_bp(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality', ...
-			'No fair Res. Usage', 'No Reconfiguration');
-		xlabel('Traffic Intensity(E)')
-		ylabel('Blocking Probability')
+		mean_bp = data_gather(info, senarios);
+		plot_core(mean_bp, legendary, xlabelary, 'Blocking Probability', ...
+			xtickary, senarios, 'plot')
 	end
 	if mut==11
-		rp = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				rp(i,m,1) = results_info_full{m,mut}/(results_info_full{m,5} + ...
-					results_info_full{m,3} + results_info_full{m,4});
-				rp(i,m,2) = results_info_naive{m,mut}/(results_info_naive{m,5} + ...
-					results_info_naive{m,3} + results_info_naive{m,4});
-				rp(i,m,3) = results_info_nofunc{m,mut}/(results_info_nofunc{m,5} + ...
-					results_info_nofunc{m,3} + results_info_nofunc{m,4});
-				rp(i,m,4) = results_info_nofair{m,mut}/(results_info_nofair{m,5} + ...
-					results_info_nofair{m,3} + results_info_nofair{m,4});
-				rp(i,m,5) = results_info_noReconf{m,mut}/(results_info_noReconf{m,5} + ...
-					results_info_noReconf{m,3} + results_info_noReconf{m,4});
-			end
-		end
-		mean_rp = squeeze(mean(rp,1));
-		for j=1:senarios
-			plot(mean_rp(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality',...
-			'No fair Res. Usage','No Reconfiguration');
-		xlabel('Traffic Intensity(E)')
-		ylabel('Reconfiguration Probability')
+		mean_rp = data_gather(info, senarios);
+		plot_core(mean_rp, legendary, xlabelary, 'Reconfiguration Probability', ...
+			xtickary, senarios, 'plot')
 	end
 	if mut==12
-		similarity = zeros(repeat ,rounds, senarios-1);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				similarity(i,m,1) = sum(sum(sum(results_info_naive{m,mut},3)== ...
-					sum(results_info_full{m,mut},3),2)==3)/ ...
-					size(results_info_full{m,mut},1);
-				similarity(i,m,2) = sum(sum(sum(results_info_nofunc{m,mut},3)== ...
-					sum(results_info_full{m,mut},3),2)==3)/ ...
-					size(results_info_full{m,mut},1);
-				similarity(i,m,3) = sum(sum(sum(results_info_nofair{m,mut},3)== ...
-					sum(results_info_full{m,mut},3),2)==3)/ ...
-					size(results_info_full{m,mut},1);
-				similarity(i,m,4) = sum(sum(sum(results_info_noReconf{m,mut},3)== ...
-					sum(results_info_full{m,mut},3),2)==3)/ ...
-					size(results_info_full{m,mut},1);
-			end
-		end
-		mean_sim = squeeze(mean(similarity,1));
-		for j=1:senarios-1
-			plot(mean_sim(:,j), colors{j+1});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Naive','No-Functionality','No fair Res. Usage','No Reconfiguration');
-		xlabel('Traffic Intensity(E)')
-		ylabel('Similarity')
+		mean_sim = data_gather(info, senarios-1);
+		plot_core(mean_sim, legendary, xlabelary, 'Similarity', ...
+			xtickary, senarios, 'plot')
 		title('Similarity of Split Option Decision to Algorithm Full')
 	end
 	if mut==13
-		times = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				times(i,m,1) = results_info_full{m,mut};
-				times(i,m,2) = results_info_naive{m,mut};
-				times(i,m,3) = results_info_nofunc{m,mut};
-				times(i,m,4) = results_info_nofair{m,mut};
-				times(i,m,5) = results_info_noReconf{m,mut};
-			end
-		end
-		mean_times = squeeze(mean(times,1));
-		for j=1:senarios
-			semilogy(mean_times(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality','No fair Res. Usage','No Reconfiguration')
-		xlabel('Traffic Intensity(E)')
-		ylabel('Simulation time(sec)')
+		mean_times = data_gather(info, senarios);
+		plot_core(mean_times, legendary, xlabelary, 'Simulation time(sec)', ...
+			xtickary, senarios, 'semilogy')
 	end
 	if mut==14
-		utilp = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				utilp(i,m,1) = results_info_full{m,mut};
-				utilp(i,m,2) = results_info_naive{m,mut};
-				utilp(i,m,3) = results_info_nofunc{m,mut};
-				utilp(i,m,4) = results_info_nofair{m,mut};
-				utilp(i,m,5) = results_info_noReconf{m,mut};
-			end
-		end
-		mean_utilp = squeeze(mean(utilp,1));
-		for j=1:senarios
-			plot(mean_utilp(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality','No fair Res. Usage','No Reconfiguration')
-		xlabel('Traffic Intensity(E)')
-		ylabel('Processing Power Utilization')
+		mean_utilp = data_gather(info, senarios);
+		plot_core(mean_utilp, legendary, xlabelary, 'Processing Power Utilization', ...
+			xtickary, senarios, 'plot')
 	end
 	if mut==15
-		utilb = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				utilb(i,m,1) = results_info_full{m,mut};
-				utilb(i,m,2) = results_info_naive{m,mut};
-				utilb(i,m,3) = results_info_nofunc{m,mut};
-				utilb(i,m,4) = results_info_nofair{m,mut};
-				utilb(i,m,5) = results_info_noReconf{m,mut};
-			end
-		end
-		mean_utilb = squeeze(mean(utilb,1));
-		for j=1:senarios
-			plot(mean_utilb(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality','No fair Res. Usage','No Reconfiguration')
-		xlabel('Traffic Intensity(E)')
-		ylabel('Optical Bandwidth Utilization')
+		mean_utilb = data_gather(info, senarios);
+		plot_core(mean_utilb, legendary, xlabelary, 'Optical Bandwidth Utilization', ...
+			xtickary, senarios, 'plot')
 	end
 	if mut==16
-		utilt = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				utilt(i,m,1) = results_info_full{m,mut};
-				utilt(i,m,2) = results_info_naive{m,mut};
-				utilt(i,m,3) = results_info_nofunc{m,mut};
-				utilt(i,m,4) = results_info_nofair{m,mut};
-				utilt(i,m,5) = results_info_noReconf{m,mut};
-			end
-		end
-		mean_utilt = squeeze(mean(utilt,1));
-		for j=1:senarios
-			plot(mean_utilt(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','Naive','No-Functionality','No fair Res. Usage','No Reconfiguration')
-		xlabel('Traffic Intensity(E)')
-		ylabel('Radio Resource Utilization')
+		mean_utilt = data_gather(info, senarios);
+		plot_core(mean_utilt, legendary, xlabelary, 'Radio Resource Utilization', ...
+			xtickary, senarios, 'plot')
 	end
 end
 
 if menu==3
+	xlabelary = 'Edge Probability';
+	xtickary = {'0.1' '0.2' '0.3' '0.4' '0.5' '0.6' '0.7' '0.8' '0.9' '1.0'};
 	if mut==5
-		bp = zeros(repeat ,rounds, senarios);
-		for i=1:repeat
-			filename = strcat(base_filename, num2str(menu),'_',num2str(i-1));
-			load(filename)
-			for m=1:rounds
-				bp(i,m,1) = results_info_full{m,mut}/(results_info_full{m,mut} + ...
-					results_info_full{m,3} + results_info_full{m,4});
-				bp(i,m,2) = results_info_nofair{m,mut}/(results_info_nofair{m,mut} + ...
-					results_info_nofair{m,3} + results_info_nofair{m,4});
-			end
-		end
-		mean_bp = squeeze(mean(bp,1));
-		for j=1:senarios
-			plot(mean_bp(:,j), colors{j});
-			hold on
-		end
-		xticklabels({'1' '4' '9' '16' '25' '36' '49' '64' '81' '100'})
-		legend('Centralized+Functionality','No Resource Fairness');
-		xlabel('Traffic Intensity(E)')
-		ylabel('Blocking Probability')
+		mean_bp = data_gather(info, senarios);
+		plot_core(mean_bp, legendary, xlabelary, 'Blocking Probability', ...
+			xtickary, senarios, 'plot')
 	end
 end
