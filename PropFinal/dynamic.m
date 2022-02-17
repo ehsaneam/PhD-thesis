@@ -1,7 +1,6 @@
-P_0 = zeros(D,1);									% last resource usage status
-B_0 = zeros(D,1);
+P_0 = zeros(D,S);									% last resource usage status
+B_0 = zeros(D,S);
 T_0 = zeros(D,1);
-TP_0 = zeros(D,1);
 TU_0 = zeros(D,1);
 u_reg = cell(4,1);
 
@@ -19,6 +18,7 @@ L3_tot = repmat(L_tot, 1, S, F);
 P3_tot = repmat(P_tot, 1, 1, F);
 B3_tot = repmat(B_tot, 1, 1, F);
 lg_tot = A_tot.*C3_tot;
+J3_tot = AP_tot.*C3_tot;
 
 for t=0:TMAX
 	finisher

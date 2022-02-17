@@ -1,8 +1,8 @@
 if U>0															% these updates will be done if users in this round exists
 	val_x = round(value(x));
 	x_tot(u_round,:,:) = val_x;									% update total x
-	B_res = val_x.*C3.*B3;										% calculate product of matrices for easier usage
-	P_res = val_x.*C3.*P3;
+	B_res = val_x.*J3.*B3;										% calculate product of matrices for easier usage
+	P_res = val_x.*J3.*P3;
 	T_res = val_x.*L3;
 	R_res = val_x.*R3.*loss_gain;
 	util_P = zeros(1,D);
@@ -34,26 +34,24 @@ if U>0															% these updates will be done if users in this round exists
 	for i=1:D													
 		ji = (i==reg1)*reg21 + (i==reg2)*reg12;
 		
-		util_P(i) = (P_0(i) + sum(sum(sum(P_res(u_reg{i},:,:)))) + ...
+		util_P(i) = (sum(P_0(i,:)) + sum(sum(sum(P_res(u_reg{i},:,:)))) + ...
 						  sum(P_res(u_reg{ji},split7_1,do_func)))/P_RU;
 		
-		util_B(i) = (B_0(i) + sum(sum(sum(B_res(u_reg{i},:,:)))) +  ...
+		util_B(i) = (sum(B_0(i,:)) + sum(sum(sum(B_res(u_reg{i},:,:)))) +  ...
 						  sum(B_res(u_reg{ji},split7_1,do_func)))/B_RU;
 		
 		util_T(i) = sum(TU_0(i) + sum(sum(sum(T_res(u_reg{i},connected,:)))) + ...
 						  sum(T_res(u_reg{ji},split7_1,do_func)))/E;
 		
-		P_0(i) = P_0(i) + sum(sum(sum(P_res(u_reg_fix{i},:,:)))) + ...
-						  sum(P_res(u_reg_fix{ji},split7_1,do_func));
+		P_0(i,:) = P_0(i,:) + sum(sum(P_res(u_reg_fix{i},:,:),3),1) + ...
+						  sum(P_res(u_reg_fix{ji},:,do_func),1);
 
-		B_0(i) = B_0(i) + sum(sum(sum(B_res(u_reg_fix{i},:,:)))) +  ...
-						  sum(B_res(u_reg_fix{ji},split7_1,do_func));
+		B_0(i,:) = B_0(i,:) + sum(sum(B_res(u_reg_fix{i},:,:),3),1) +  ...
+						  sum(B_res(u_reg_fix{ji},:,do_func),1);
 
 		T_0(i) = T_0(i) + sum(sum(sum(T_res(u_reg_fix{i},connected,:)))) + ...
 						  sum(T_res(u_reg_fix{ji},split7_1,do_func));
-
-		TP_0(i) = TP_0(i) + sum(sum(T_res(u_reg_fix{ji},connected,no_func)));
-					  
+				  
 		TU_0(i) = TU_0(i) + sum(sum(sum(T_res(u_reg_fix{i},connected,:)))) + ...
 						  sum(T_res(u_reg_fix{ji},split7_1,do_func));
 	end

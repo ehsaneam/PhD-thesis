@@ -20,4 +20,5 @@ if U>0
 	R3 = R3_tot(u_round,:,:);
 	C3 = C3_tot(u_round,:,:);
 	loss_gain = lg_tot(u_round,:,:);
+	J3 = J3_tot(u_round,:,:);
 end

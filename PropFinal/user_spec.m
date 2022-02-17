@@ -44,6 +44,8 @@ function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	A(:, split7_1, no_func) = norm_A;
 	A(:, blocked_con, :) = min_A;
 	
+	AP = (A>1).*A/2 + (A<=1).*A;
+	
 	%% Resources
 	B(:, split2) = u_rand*(max_B - min_B) + min_B;
 	B(:, split7_1) = ratio_B * B(:, split2);
@@ -58,5 +60,5 @@ function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	%% Outputs Concatination
 	RU = {P, B, L};													% user resource usage statistics
 	TS = {TStart, TEnd, Reconf};									% user time statistics
-	RS = {R, C, A};													% user rate statistics
+	RS = {R, C, A, AP};												% user rate statistics
 end

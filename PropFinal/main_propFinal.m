@@ -11,7 +11,7 @@ else
 		'\n   3-throughput scaling\n   4-bw scaling\n   5-process scaling\n   6-prob scaling',...
 		'\n   7-channel state scaling\n   8-increase ratio scaling\n=>');
 	% menu = input(input_prompt);
-	menu = 8;
+	menu = 2;
 	if isempty(menu)
 		menu = rate_scaling;
 	elseif menu<rate_scaling || menu>func_scaling
@@ -26,7 +26,7 @@ else
 	results_info_nofunc = cell(rounds, senario_data_slots);
 	results_info_nofair = cell(rounds, senario_data_slots);
 	results_info_noReconf = cell(rounds,senario_data_slots);
-	round_info = cell(rounds, 12);
+	round_info = cell(rounds, 14);
 
 	if menu == rate_scaling
 		min_coef = 1; max_coef = 2;
@@ -37,7 +37,6 @@ else
 
 	if menu == user_scaling
 		mu = 1;
-		tau = 1;
 	end
 
 	if menu == throughput_scaling
@@ -75,10 +74,10 @@ for m=m:rounds
 		[RU, RS, TS, u_reg_tot, U_tot] = user_spec(rate_coef);
 		erlang = mu*tau;
 		P_tot = RU{1}; B_tot = RU{2}; L_tot = RU{3};
-		R_tot = RS{1}; C_tot = RS{2}; A_tot = RS{3};
+		R_tot = RS{1}; C_tot = RS{2}; A_tot = RS{3}; AP_tot = RS{4};
 		TStart = TS{1}; TEnd = TS{2}; Reconf = TS{3};
-		round_info(m,:) = {erlang, u_reg_tot, C_tot, P_tot, B_tot, R_tot, ...
-						   A_tot, L_tot, sum(R_tot), TStart, TEnd, Reconf};
+		round_info(m,:) = {U_tot, erlang, u_reg_tot, C_tot, P_tot, B_tot, R_tot, ...
+						   A_tot, AP_tot, L_tot, sum(R_tot), TStart, TEnd, Reconf};
 
 		func_state = do_func;
 		fairness = 1;
@@ -155,7 +154,6 @@ for m=m:rounds
 		min_C = 1/max_A;
 	elseif menu == user_scaling
 		mu = mu + 1;
-		tau = tau + 1;
 	elseif menu == ratio_scaling
 		ratio_P = ratio_P + 1;
 		ratio_B = ratio_B + 1;
