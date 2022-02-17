@@ -1,3 +1,3 @@
 for repeat=1:10
-	main_dynamic
+	main_propFinal
 end
