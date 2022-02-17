@@ -1,7 +1,7 @@
 u_finish = find(TStart<t & TEnd>=t & TEnd <t+1 & ~Reconf);
 if ~isempty(u_finish)
-	P_tot_res = x_tot.*J_tot.*P3_tot;
-	B_tot_res = x_tot.*J_tot.*B3_tot;
+	P_tot_res = x_tot.*J3_tot.*P3_tot;
+	B_tot_res = x_tot.*J3_tot.*B3_tot;
 	T_tot_res = x_tot.*L3_tot;
 	for i=1:D
 		ji = (i==reg1)*reg21 + (i==reg2)*reg12;

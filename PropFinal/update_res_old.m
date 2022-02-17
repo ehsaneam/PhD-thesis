@@ -1,6 +1,6 @@
 function res_old = update_res_old(res_0, res, u_reg, x)
 	global D reg1 reg2 reg12 reg21 split7_1 do_func ...
-		connected
+		connected S
 	P_0 = res_0{1}; B_0 = res_0{2}; T_0 = res_0{3};
 	P_res = res{1}.*x; B_res = res{2}.*x; T_res = res{3}.*x;
 	

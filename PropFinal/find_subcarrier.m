@@ -1,6 +1,6 @@
 function e_out = find_subcarrier(req_n_res_stat, s, f)
 	global reg1 reg2 reg12 reg21 split7_1 do_func ...
-		P_RU B_RU E D phi theta
+		P_RU B_RU E D phi theta S
 
 	u=req_n_res_stat{1};
 	u_reg=req_n_res_stat{2};
@@ -18,9 +18,9 @@ function e_out = find_subcarrier(req_n_res_stat, s, f)
 	check_P = lhs_P<=P_RU*theta(s);
 	lhs_B = B + B0_old;
 	check_B = lhs_B<=B_RU*phi(s);
-	assert(isequal(size(check_T),[1,D]) && ...
-			   isequal(size(check_P),[1,D]) && ...
-			   isequal(size(check_B),[1,D]), 'naive_check_reg.m: size mismatch')
+% 	assert(isequal(size(check_T),[1,D]) && ...
+% 			   isequal(size(check_P),[D,1]) && ...
+% 			   isequal(size(check_B),[D,1]), 'naive_check_reg.m: size mismatch')
 		   
 	%% bandwidth and process resource check	   
 	for k=1:D

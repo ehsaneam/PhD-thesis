@@ -44,7 +44,11 @@ if U>0
 		end
 	end
 	
-	con = [sum(sum(x, 3),2) == 1, P <= P_RU*theta, B <= B_RU*phi, T <= E];
+	rhs_P = P_RU*repmat(theta, D, 1);
+	rhs_B = B_RU*repmat(phi, D, 1);
+	
+	con = [sum(sum(x, 3),2) == 1, P(:,connected) <= rhs_P, ...
+		B(:,connected) <= rhs_B, T <= E];
 	
 	if func_state==no_func
 		con = [con, x(:,:,do_func) == 0];
