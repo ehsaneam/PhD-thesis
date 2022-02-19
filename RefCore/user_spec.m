@@ -1,18 +1,19 @@
 function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	global min_P min_B min_R min_A max_P max_B max_R max_A PRB_cap ...
 		   S F blocked_con split7_1 split2 ratio_B do_func no_func ...
-		   norm_A ratio_P reg1 reg2 reg12 reg21 mu tau TMAX D
+		   norm_A ratio_P reg1 reg2 reg12 reg21 mu tau TMAX D min_C max_C
 
 	arrival_rates = poissrnd(mu, [TMAX+1,1]);
 	U = sum(arrival_rates);
 	B = zeros(U, S);
-	P = zeros(U, S);
+	P = zeros(U, S, F);
 	A = zeros(U, S, F);
 	TStart = zeros(U, 1);
 	
 	%% Region Spec
 	u_rand_reg = rand(U,1);
 	[u_reg, C] = region_dist(u_rand_reg, D);
+	M = (C==min_C).*2 + (C==.5).*4 + (C==2/3).*6 + (C==max_C).*8;
 	
 	com_reg = union(u_reg{reg12}, u_reg{reg21});
 	xor_reg = setdiff(union(u_reg{reg1}, u_reg{reg2}), com_reg);	% not common regions
@@ -51,11 +52,15 @@ function [RU, RS, TS, u_reg, U] = user_spec(rate_coef)
 	B(:, split7_1) = ratio_B * B(:, split2);
 	B(:, blocked_con) = 0;
 	
-	P(:, split7_1) = u_rand*(max_P - min_P) + min_P;
-	P(:, split2) = ratio_P * P(:, split7_1);
-	P(:, blocked_con) = 0;
-	
 	L = ceil(R/PRB_cap);
+	
+	P_base = L.*(4+M/3)/10;
+	P(:, split2, :) = repmat(P_base, 1, 1, F);
+	P(:, split7_1, no_func) = P(:, split2, no_func);
+	P(xor_reg, split7_1, do_func) = P(xor_reg, split2, do_func);
+	P_base = L.*(4+2*M/3)/10;
+	P(com_reg, split7_1, do_func) = P_base(com_reg);
+	P(:, blocked_con, :) = 0;
 	
 	%% Outputs Concatination
 	RU = {P, B, L};													% user resource usage statistics

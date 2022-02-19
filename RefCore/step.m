@@ -14,7 +14,7 @@ if U>0
 	u_reg{reg12} = find(ismember(u_round,intersect(u_reg_tot{reg12},u_round)));
 	u_reg{reg21} = find(ismember(u_round,intersect(u_reg_tot{reg21},u_round)));
 
-	P3 = P3_tot(u_round,:,:);
+	P3 = P_tot(u_round,:,:);
 	L3 = L3_tot(u_round,:,:);
 	B3 = B3_tot(u_round,:,:);
 	R3 = R3_tot(u_round,:,:);

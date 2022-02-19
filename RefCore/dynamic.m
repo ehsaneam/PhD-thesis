@@ -15,7 +15,6 @@ x_tot  = zeros(U_tot, S, F);
 R3_tot = repmat(R_tot, 1, S, F);					% repeating 1D matrix to 4D for matrix manupulations
 C3_tot = repmat(C_tot, 1, S, F);
 L3_tot = repmat(L_tot, 1, S, F);
-P3_tot = repmat(P_tot, 1, 1, F);
 B3_tot = repmat(B_tot, 1, 1, F);
 lg_tot = A_tot.*C3_tot;
 J3_tot = AP_tot.*C3_tot;

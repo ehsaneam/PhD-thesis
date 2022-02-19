@@ -8,7 +8,7 @@ constants
 
 menu = 2;
 mut = 5;
-repeat = 20;
+repeat = 5;
 
 base_filename = '..\mat_files\Dynosub2\option_';
 legendary = ["Full","Single","No Func","Not Fair","No Reconf"];
