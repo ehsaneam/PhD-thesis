@@ -162,11 +162,11 @@ for m=m:rounds
 end
 
 if isunix % linux OS
-	file_count = size(dir('../mat_files/NaiveSort/*.mat'),1);
-	filename = strcat('../mat_files/NaiveSort/option_', num2str(menu),'_',num2str(file_count));
+	file_count = size(dir('../mat_files/Dynosub3/*.mat'),1);
+	filename = strcat('../mat_files/Dynosub3/option_', num2str(menu),'_',num2str(file_count));
 elseif ispc % windows OS
-	file_count = size(dir('..\mat_files\NaiveSort\*.mat'),1);
-	filename = strcat('..\mat_files\NaiveSort\option_', num2str(menu),'_',num2str(file_count));
+	file_count = size(dir('..\mat_files\Dynosub3\*.mat'),1);
+	filename = strcat('..\mat_files\Dynosub3\option_', num2str(menu),'_',num2str(file_count));
 end
 
 save(filename, 'results_info_full', 'results_info_naive', ...
