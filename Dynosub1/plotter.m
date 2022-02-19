@@ -7,10 +7,10 @@ rounds = 10;
 constants
 
 menu = 2;
-mut = 15;
+mut = 5;
 repeat = 20;
 
-base_filename = '..\mat_files\PropFinal\option_';
+base_filename = '..\mat_files\Dynosub1\option_';
 legendary = ["Full","Single","No Func","Not Fair","No Reconf"];
 info = {repeat, rounds, menu, mut, base_filename};
 
